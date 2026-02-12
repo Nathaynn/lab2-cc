@@ -161,11 +161,6 @@ def handle_2pl(events, initial_state):
             _append(curr_trace)
             release_locks(t_num)
 
-        else:
-            # unknown op: ignore but record for error handling
-            curr_trace.update({"event": "OP", "op": operation})
-            _append(curr_trace)
-
     return trace, initial_state
 
 def handle_mvcc(events, initial_state):
@@ -250,25 +245,15 @@ def handle_mvcc(events, initial_state):
                 _append({'step': step, 'event': 'OP', 't': t, 'op': 'COMMIT'})
                 txn['state'] = 'committed'
 
-        else:
-            # unknown op: debugging
-            _append({'step': step, 'event': 'OP', 'op': op})
-
     final_state = {item: versions[item][-1][0] for item in versions}
     return trace, final_state
 
 def run_schedule(schedule_path, cc, initial_state):
-    """
-    Run schedule under given CC. Returns (trace_events, final_state).
-    """
     events = load_schedule(schedule_path)
     # dispatch to the chosen concurrency control
     if cc == "2pl":
         trace, final_state = handle_2pl(events, initial_state)
-    elif cc == "mvcc":
-        trace, final_state = handle_mvcc(events, initial_state)
     else:
-        print(f"CC mode '{cc}' not supported by this runner (supported: '2pl','mvcc').")
-        trace, final_state = None, initial_state
+        trace, final_state = handle_mvcc(events, initial_state)
 
     return trace, final_state

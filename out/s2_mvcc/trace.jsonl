@@ -1,19 +1,9 @@
 {"step": 1, "event": "OP", "t": 1, "op": "BEGIN"}
 {"step": 2, "event": "OP", "t": 2, "op": "BEGIN"}
-{"step": 3, "event": "LOCK", "item": "A", "grant": "X", "to": 1}
-{"step": 4, "event": "OP", "t": 1, "op": "W", "item": "A", "value": 101}
-{"step": 5, "event": "LOCK", "item": "B", "grant": "X", "to": 2}
-{"step": 6, "event": "OP", "t": 2, "op": "W", "item": "B", "value": 201}
-{"step": 7, "event": "OP", "t": 1, "op": "W", "item": "B", "value": 102, "result": "BLOCKED", "why": "waiting for X(B)"}
-{"step": 8, "event": "OP", "t": 2, "op": "W", "item": "A", "value": 202, "result": "BLOCKED", "why": "waiting for X(A)"}
-{"step": 9, "event": "OP", "t": 1, "op": "COMMIT"}
-{"step": 10, "event": "UNLOCK", "item": "A", "t": 1, "mode": "X"}
-{"step": 11, "event": "LOCK", "item": "A", "grant": "X", "to": 2}
-{"step": 12, "event": "UNBLOCK", "t": 2, "op": "W", "item": "A"}
-{"step": 13, "event": "OP", "t": 2, "op": "W", "item": "A", "value": 202}
-{"step": 14, "event": "OP", "t": 2, "op": "COMMIT"}
-{"step": 15, "event": "UNLOCK", "item": "B", "t": 2, "mode": "X"}
-{"step": 16, "event": "LOCK", "item": "B", "grant": "X", "to": 1}
-{"step": 17, "event": "UNBLOCK", "t": 1, "op": "W", "item": "B"}
-{"step": 18, "event": "OP", "t": 1, "op": "W", "item": "B", "value": 102}
-{"step": 19, "event": "UNLOCK", "item": "A", "t": 2, "mode": "X"}
+{"step": 3, "event": "OP", "t": 1, "op": "W", "item": "A", "value": 101}
+{"step": 4, "event": "OP", "t": 2, "op": "W", "item": "B", "value": 201}
+{"step": 5, "event": "OP", "t": 1, "op": "W", "item": "B", "value": 102}
+{"step": 6, "event": "OP", "t": 2, "op": "W", "item": "A", "value": 202}
+{"step": 7, "event": "OP", "t": 1, "op": "COMMIT"}
+{"step": 8, "event": "ABORT", "t": 2}
+{"step": 9, "event": "OP", "t": 2, "op": "COMMIT", "result": "ABORT", "why": "conflict"}
